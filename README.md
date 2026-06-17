@@ -84,14 +84,25 @@ packages/
 
 ## Scripts
 
-| Command           | What it does                 |
-| ----------------- | ---------------------------- |
-| `pnpm dev`        | Run all apps in dev mode     |
-| `pnpm build`      | Build all apps               |
-| `pnpm lint`       | Lint all packages            |
-| `pnpm db:migrate` | Run a Prisma migration (dev) |
-| `pnpm db:studio`  | Open Prisma Studio           |
-| `pnpm db:seed`    | Seed the database            |
+| Command             | What it does                       |
+| ------------------- | ---------------------------------- |
+| `pnpm dev`          | Run all apps in dev mode           |
+| `pnpm build`        | Build all apps and packages        |
+| `pnpm lint`         | Lint all packages                  |
+| `pnpm typecheck`    | Type-check all packages (`tsc`)    |
+| `pnpm format`       | Format the repo with Prettier      |
+| `pnpm format:check` | Check formatting without writing   |
+| `pnpm db:migrate`   | Run a Prisma migration (dev)       |
+| `pnpm db:reset`     | Drop and recreate the dev database |
+| `pnpm db:seed`      | Seed the database                  |
+| `pnpm db:studio`    | Open Prisma Studio                 |
+
+## CI
+
+- GitHub Actions workflow at `.github/workflows/ci.yml`.
+- Runs `pnpm lint`, `pnpm typecheck`, then `pnpm build`.
+- Manual trigger only for now (`workflow_dispatch`).
+- Uncomment the `push` / `pull_request` triggers in the file to run it automatically.
 
 ## Adding a language
 
