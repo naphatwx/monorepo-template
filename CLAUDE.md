@@ -59,6 +59,52 @@ graph LR
     Worker --> DB
 ```
 
+## Agents and dev workflow
+
+- Each app has a scoped `AGENTS.md` next to its code.
+    - `apps/web/AGENTS.md`, `apps/api/AGENTS.md`, `apps/worker/AGENTS.md`.
+    - This root `CLAUDE.md` holds cross-cutting rules.
+    - The app file holds app-specific rules. The closest file wins.
+- Each app has a matching dev subagent in `.claude/agents/`.
+    - `web-dev`, `api-dev`, `worker-dev`.
+
+**Rule: when work is scoped to one app, develop it through that app's subagent.**
+
+| Work in       | Spawn subagent |
+| ------------- | -------------- |
+| `apps/web`    | `web-dev`      |
+| `apps/api`    | `api-dev`      |
+| `apps/worker` | `worker-dev`   |
+
+- Each subagent reads its app's `AGENTS.md` first.
+- It works only inside that app, then runs `lint` and `typecheck`.
+- Cross-app or shared-package changes stay in the main session.
+
+### Three layers — context and duty
+
+| File                       | Duty                          | Who reads it             | Enters context when                       |
+| -------------------------- | ----------------------------- | ------------------------ | ----------------------------------------- |
+| `CLAUDE.md` (root)         | Repo-wide rules               | Main agent + subagents   | Auto-loaded every session                 |
+| `.claude/agents/<app>-dev.md` | Defines the app's dev subagent | Main agent (for routing) | Loaded as a definition at session start   |
+| `apps/<app>/AGENTS.md`     | App-specific details          | That app's subagent      | Read by the subagent while it works       |
+
+- `CLAUDE.md`: the repo "constitution". No app-specific detail here.
+- `<app>-dev.md`: its `description` decides when to spawn; its body is the system prompt.
+- `AGENTS.md`: the on-site manual for one app. Closest file wins.
+
+How a task flows:
+
+```
+Main agent (CLAUDE.md already loaded)
+  -> matches the task to a subagent description
+  -> spawns <app>-dev (its body becomes the system prompt)
+  -> subagent reads apps/<app>/AGENTS.md first
+  -> edits only that app, then runs lint + typecheck
+  -> returns a summary to the main session
+```
+
+- Custom subagents also load `CLAUDE.md`. They must read `AGENTS.md` themselves; their body tells them to.
+
 ## Conventions
 
 ### Code style
@@ -92,78 +138,17 @@ graph LR
 
 ## Apps
 
-### web (Next.js)
-
-- App Router under `apps/web/src/app`.
-- Routes: `/` (landing), `/server`, `/client`.
-- i18n: `next-intl`. Locale comes from a `locale` cookie. Default `en`.
-- Theme: `next-themes`. Options light / dark / system. Default `system`.
-- UI: shadcn components live in `apps/web/src/components/ui`.
-- `transpilePackages` in `next.config.ts` lists the `@repo/*` packages it imports.
-
-Server side vs client side:
-
-|                  | Server side (`/server`)                | Client side (`/client`)             |
-| ---------------- | -------------------------------------- | ----------------------------------- |
-| Component        | Server Component                       | Client Component (`'use client'`)   |
-| Fetch runs       | on the server during render            | in the browser after load           |
-| Low-level helper | `serverFetch()` in `lib/api/server.ts` | `apiFetch()` in `lib/api/client.ts` |
-| Target           | `API_INTERNAL_URL` directly            | `/api/proxy` route                  |
-| Caching          | `no-store`, `force-dynamic`            | per request                         |
-
-- The proxy route is `apps/web/src/app/api/proxy/[...path]/route.ts`.
-- It forwards `/api/proxy/<path>` to `<API_URL>/api/<path>` with cookies.
-
-### Calling the API from web
-
-- Do not call `apiFetch()` / `serverFetch()` with raw path strings in pages.
-- Use a typed domain function instead. Change an endpoint in one place.
-- Layout of `apps/web/src/lib/api`:
-
-| File           | Holds                                    |
-| -------------- | ---------------------------------------- |
-| `endpoints.ts` | All API paths in one object              |
-| `client.ts`    | `apiFetch()` — low-level, via proxy      |
-| `server.ts`    | `serverFetch()` — low-level, server only |
-| `health.ts`    | `getHealth()`, `getHealthOnServer()`     |
-| `events.ts`    | `sendPing()`                             |
-| `index.ts`     | Re-exports everything                    |
-
-- Pattern: a domain file imports the path from `endpoints.ts`, picks the low-level helper, and returns a typed result.
-- To add an endpoint: add the path to `endpoints.ts`, then add a function in a domain file (or a new one).
-- Pages import from `@/lib/api`, e.g. `import { getHealth, sendPing } from '@/lib/api'`.
-
-### api (NestJS)
-
-- Entry: `apps/api/src/main.ts`.
-- Global route prefix is `api`. So health is at `/api/health`.
-- Swagger UI at `/api/docs`.
-- Validation: `nestjs-zod` global pipe. DTOs use `createZodDto` with a zod schema from `@repo/types`.
-- Endpoints:
-    - `GET /api/health` returns `{ status: 'ok', timestamp }`.
-    - `POST /api/events/ping` publishes an event to RabbitMQ.
-- Publishing has a 5 second timeout. If the broker is down it returns `503`, it does not hang.
-
-### worker (NestJS)
-
-- Entry: `apps/worker/src/main.ts`. Runs as an application context, no HTTP server.
-- Consumes RabbitMQ events.
-- `EventConsumer` listens on routing key `event.ping` and logs the message.
-
-### NestJS specifics (api and worker)
-
-- ESM with `module`/`moduleResolution` set to `nodenext`.
-- Local imports must use the `.js` extension, e.g. `import { AppModule } from './app.module.js'`.
-- Runtime uses `tsx`. Build uses the Nest CLI with the `swc` builder.
-- `tsconfig.json` sets `rootDir` to `./src` and `outDir` to `./dist`.
+- Each app's details live in its own `AGENTS.md`. The closest file wins.
+    - `apps/web/AGENTS.md` — Next.js frontend.
+    - `apps/api/AGENTS.md` — NestJS REST API.
+    - `apps/worker/AGENTS.md` — NestJS background worker.
+- See also "Agents and dev workflow" above for which subagent to spawn.
 
 ## RabbitMQ contract
 
-- Exchange `events`, type `topic`.
-- Routing key `event.ping`.
-- Worker queue `worker.event.ping`.
-- Shared constants live in `@repo/types` (`EVENTS_EXCHANGE`, `PING_ROUTING_KEY`).
-- The event shape is `PingEvent` in `@repo/types`. Keep publisher and consumer in sync through this type.
+- Connects the api publisher and the worker consumer.
+- The single source of truth is `@repo/types`: `EVENTS_EXCHANGE`, `PING_ROUTING_KEY`, `PingEvent`.
+- Per-app details are in `apps/api/AGENTS.md` and `apps/worker/AGENTS.md`.
 
 ## Database (Prisma)
 
@@ -234,6 +219,13 @@ URLs:
 
 ## How to extend
 
+### Add an app
+
+1. Create the app under `apps/<name>`.
+2. Add `apps/<name>/AGENTS.md` with the app's scoped rules.
+3. Add `.claude/agents/<name>-dev.md` as its dev subagent.
+4. List the new app in the "Agents and dev workflow" table above.
+
 ### Add a language
 
 1. Add `apps/web/src/messages/<locale>.json`.
@@ -298,3 +290,4 @@ Order of decisions and work, newest last.
 15. Wrapped web API calls in typed domain functions so endpoints live in one place.
 16. Split the Prisma schema into a multi-file folder, added `prisma.config.ts`, and committed migrations.
 17. Added a `typecheck` task, env validation in `@repo/types`, root `db:reset`, and Prettier `format` scripts.
+18. Added per-app `AGENTS.md` files and matching `<app>-dev` subagents, plus the dev workflow rule.
