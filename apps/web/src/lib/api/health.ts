@@ -1,7 +1,7 @@
-import type { HealthResponse } from '@repo/types'
-import { apiFetch } from './client'
-import { serverFetch } from './server'
-import { endpoints } from './endpoints'
+import type { HealthResponse } from "@repo/types"
+import { apiFetch } from "./client"
+import { serverFetch } from "./server"
+import { endpoints } from "./endpoints"
 
 // Client side: fetch from the browser through the proxy.
 export function getHealth() {

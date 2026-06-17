@@ -7,7 +7,7 @@ export async function apiFetch<T>(
     options: RequestInit = {},
 ): Promise<T> {
     const res = await fetch(`/api/proxy${path}`, {
-        headers: { 'Content-Type': 'application/json', ...options.headers },
+        headers: { "Content-Type": "application/json", ...options.headers },
         ...options,
     })
 

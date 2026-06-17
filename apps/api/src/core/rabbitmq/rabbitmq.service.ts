@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common'
-import { AmqpConnection } from '@golevelup/nestjs-rabbitmq'
-import { EVENTS_EXCHANGE, PING_ROUTING_KEY, type PingEvent } from '@repo/types'
+import { Injectable } from "@nestjs/common"
+import { AmqpConnection } from "@golevelup/nestjs-rabbitmq"
+import { EVENTS_EXCHANGE, PING_ROUTING_KEY, type PingEvent } from "@repo/types"
 
 // Publish blocks until a channel opens. If the broker is down this never
 // resolves, so cap it with a timeout and fail fast instead of hanging.
@@ -27,7 +27,7 @@ export class RabbitmqService {
         let timer: ReturnType<typeof setTimeout>
         const timeout = new Promise<never>((_, reject) => {
             timer = setTimeout(
-                () => reject(new Error('RabbitMQ publish timed out')),
+                () => reject(new Error("RabbitMQ publish timed out")),
                 PUBLISH_TIMEOUT_MS,
             )
         })

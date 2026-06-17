@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from "zod"
 
 // Payload for POST /api/events/ping.
 export const pingPayloadSchema = z.object({
@@ -20,5 +20,5 @@ export interface PingResult {
 }
 
 // RabbitMQ routing config shared by the API (publisher) and worker (consumer).
-export const EVENTS_EXCHANGE = 'events'
-export const PING_ROUTING_KEY = 'event.ping'
+export const EVENTS_EXCHANGE = "events"
+export const PING_ROUTING_KEY = "event.ping"

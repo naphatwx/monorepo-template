@@ -1,19 +1,19 @@
-'use client'
+"use client"
 
-import { useEffect, useState } from 'react'
-import { useTheme } from 'next-themes'
-import { useTranslations } from 'next-intl'
-import { Monitor, Moon, Sun } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { useEffect, useState } from "react"
+import { useTheme } from "next-themes"
+import { useTranslations } from "next-intl"
+import { Monitor, Moon, Sun } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 const OPTIONS = [
-    { value: 'light', Icon: Sun },
-    { value: 'dark', Icon: Moon },
-    { value: 'system', Icon: Monitor },
+    { value: "light", Icon: Sun },
+    { value: "dark", Icon: Moon },
+    { value: "system", Icon: Monitor },
 ] as const
 
 export function ThemeToggle() {
-    const t = useTranslations('theme')
+    const t = useTranslations("theme")
     const { theme, setTheme } = useTheme()
     const [mounted, setMounted] = useState(false)
 
@@ -26,14 +26,14 @@ export function ThemeToggle() {
         <div
             className="inline-flex rounded-md border border-input"
             role="group"
-            aria-label={t('label')}
+            aria-label={t("label")}
         >
             {OPTIONS.map(({ value, Icon }) => (
                 <Button
                     key={value}
                     type="button"
                     size="icon"
-                    variant={theme === value ? 'secondary' : 'ghost'}
+                    variant={theme === value ? "secondary" : "ghost"}
                     aria-label={t(value)}
                     title={t(value)}
                     onClick={() => setTheme(value)}

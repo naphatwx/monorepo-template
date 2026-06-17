@@ -1,24 +1,24 @@
-import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
-import { NextIntlClientProvider } from 'next-intl'
-import { getLocale, getMessages } from 'next-intl/server'
-import { ThemeProvider } from '@/components/providers/theme-provider'
-import { Header } from '@/components/layouts/header'
-import './globals.css'
+import type { Metadata } from "next"
+import { Geist, Geist_Mono } from "next/font/google"
+import { NextIntlClientProvider } from "next-intl"
+import { getLocale, getMessages } from "next-intl/server"
+import { ThemeProvider } from "@/components/providers/theme-provider"
+import { Header } from "@/components/layouts/header"
+import "./globals.css"
 
 const geistSans = Geist({
-    variable: '--font-sans',
-    subsets: ['latin'],
+    variable: "--font-sans",
+    subsets: ["latin"],
 })
 
 const geistMono = Geist_Mono({
-    variable: '--font-geist-mono',
-    subsets: ['latin'],
+    variable: "--font-geist-mono",
+    subsets: ["latin"],
 })
 
 export const metadata: Metadata = {
-    title: 'Monorepo Template',
-    description: 'Starter monorepo: Next.js + NestJS + worker',
+    title: "Monorepo Template",
+    description: "Starter monorepo: Next.js + NestJS + worker",
 }
 
 export default async function RootLayout({

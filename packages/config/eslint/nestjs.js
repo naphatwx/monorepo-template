@@ -1,10 +1,10 @@
-const base = require('./base')
+const base = require("./base")
 
 module.exports = [
     ...base,
     {
         rules: {
-            '@typescript-eslint/no-floating-promises': 'off',
+            "@typescript-eslint/no-floating-promises": "off",
         },
     },
 ]

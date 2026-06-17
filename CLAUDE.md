@@ -66,7 +66,7 @@ graph LR
 - Defined in `.prettierrc` and `.editorconfig`.
 - 4-space indent.
 - No semicolons.
-- Single quotes.
+- Double quotes.
 - Trailing comma: all.
 - Line ending: LF.
 - Run `pnpm lint` and `pnpm typecheck` before committing.

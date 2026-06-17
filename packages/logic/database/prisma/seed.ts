@@ -1,12 +1,12 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from "@prisma/client"
 
 const prisma = new PrismaClient()
 
 async function main() {
     await prisma.example.create({
-        data: { name: 'Hello from seed' },
+        data: { name: "Hello from seed" },
     })
-    console.log('Seed done')
+    console.log("Seed done")
 }
 
 main()
