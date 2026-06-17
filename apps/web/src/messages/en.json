@@ -1,0 +1,39 @@
+{
+    "common": {
+        "appName": "Monorepo Template",
+        "loading": "Loading...",
+        "home": "Home",
+        "serverSide": "Server side",
+        "clientSide": "Client side"
+    },
+    "home": {
+        "title": "Monorepo Template",
+        "subtitle": "Next.js + NestJS + worker, ready to start a new project.",
+        "serverCard": "Server side rendering",
+        "serverCardDesc": "Data fetched on the server during render.",
+        "clientCard": "Client side rendering",
+        "clientCardDesc": "Data fetched in the browser after load.",
+        "open": "Open"
+    },
+    "server": {
+        "title": "Server side",
+        "description": "This page is a Server Component. It fetches the API health check on the server while rendering. The result is part of the HTML, with no loading state.",
+        "result": "Health check result"
+    },
+    "client": {
+        "title": "Client side",
+        "description": "This page is a Client Component. It fetches the API health check from the browser through a proxy route.",
+        "checkHealth": "Check health",
+        "sendPing": "Send queue ping",
+        "result": "Health check result",
+        "pingResult": "Ping result",
+        "idle": "Press the button to call the API.",
+        "error": "Request failed"
+    },
+    "theme": {
+        "label": "Theme",
+        "light": "Light",
+        "dark": "Dark",
+        "system": "System"
+    }
+}
