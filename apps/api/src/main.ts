@@ -1,9 +1,11 @@
 import { NestFactory } from '@nestjs/core'
+import { Logger } from '@nestjs/common'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { ZodValidationPipe, cleanupOpenApiDoc } from 'nestjs-zod'
 import { AppModule } from './app.module.js'
 
 async function bootstrap() {
+    const logger = new Logger('Bootstrap')
     const app = await NestFactory.create(AppModule)
 
     app.setGlobalPrefix('api')
@@ -27,7 +29,7 @@ async function bootstrap() {
 
     const port = process.env.PORT ?? 4000
     await app.listen(port)
-    console.log(`API server running on http://localhost:${port}`)
-    console.log(`Swagger docs at http://localhost:${port}/api/docs`)
+    logger.log(`API server running on http://localhost:${port}`)
+    logger.log(`Swagger docs at http://localhost:${port}/api/docs`)
 }
 void bootstrap()
