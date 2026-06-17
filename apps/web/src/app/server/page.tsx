@@ -1,5 +1,5 @@
 import { getTranslations } from 'next-intl/server'
-import { serverApi } from '@/lib/server-api'
+import { getHealthOnServer } from '@/lib/api'
 import type { HealthResponse } from '@repo/types'
 
 // Server Component. Runs on the server, so the fetch happens during render
@@ -12,7 +12,7 @@ export default async function ServerPage() {
     let health: HealthResponse | null = null
     let error: string | null = null
     try {
-        health = await serverApi<HealthResponse>('/health')
+        health = await getHealthOnServer()
     } catch (e) {
         error = e instanceof Error ? e.message : 'Request failed'
     }

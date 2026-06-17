@@ -13,6 +13,12 @@ export interface PingEvent {
     publishedAt: string
 }
 
+// Response from POST /api/events/ping.
+export interface PingResult {
+    published: boolean
+    event: PingEvent
+}
+
 // RabbitMQ routing config shared by the API (publisher) and worker (consumer).
 export const EVENTS_EXCHANGE = 'events'
 export const PING_ROUTING_KEY = 'event.ping'

@@ -1,8 +1,8 @@
-// Client-side fetch helper.
-// Calls go through the Next.js proxy route at /api/proxy, which forwards
-// them to the NestJS API. Same-origin, so cookies are forwarded and there
-// is no CORS to configure.
-export async function api<T>(
+// Low-level client-side fetch.
+// Goes through the Next.js proxy route at /api/proxy, which forwards to the
+// API. Same-origin, so cookies are sent and there is no CORS to configure.
+// Prefer the typed domain functions (health.ts, events.ts) over this.
+export async function apiFetch<T>(
     path: string,
     options: RequestInit = {},
 ): Promise<T> {

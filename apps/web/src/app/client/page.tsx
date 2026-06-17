@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@repo/ui'
-import { api } from '@/lib/api'
+import { getHealth, sendPing } from '@/lib/api'
 import type { HealthResponse } from '@repo/types'
 
 // Client Component. The fetch runs in the browser after the page loads,
@@ -21,7 +21,7 @@ export default function ClientPage() {
         setLoading(true)
         setError(null)
         try {
-            setHealth(await api<HealthResponse>('/health'))
+            setHealth(await getHealth())
         } catch (e) {
             setError(e instanceof Error ? e.message : t('error'))
         } finally {
@@ -29,16 +29,11 @@ export default function ClientPage() {
         }
     }
 
-    async function sendPing() {
+    async function handlePing() {
         setLoading(true)
         setError(null)
         try {
-            setPing(
-                await api('/events/ping', {
-                    method: 'POST',
-                    body: JSON.stringify({ message: 'ping from /client' }),
-                }),
-            )
+            setPing(await sendPing('ping from /client'))
         } catch (e) {
             setError(e instanceof Error ? e.message : t('error'))
         } finally {
@@ -60,7 +55,7 @@ export default function ClientPage() {
                 </Button>
                 <Button
                     variant="outline"
-                    onClick={sendPing}
+                    onClick={handlePing}
                     disabled={loading}
                 >
                     {t('sendPing')}

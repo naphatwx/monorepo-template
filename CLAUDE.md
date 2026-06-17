@@ -106,12 +106,31 @@ Server side vs client side:
 |---|---|---|
 | Component | Server Component | Client Component (`'use client'`) |
 | Fetch runs | on the server during render | in the browser after load |
-| Helper | `serverApi()` in `lib/server-api.ts` | `api()` in `lib/api.ts` |
+| Low-level helper | `serverFetch()` in `lib/api/server.ts` | `apiFetch()` in `lib/api/client.ts` |
 | Target | `API_INTERNAL_URL` directly | `/api/proxy` route |
 | Caching | `no-store`, `force-dynamic` | per request |
 
 - The proxy route is `apps/web/src/app/api/proxy/[...path]/route.ts`.
 - It forwards `/api/proxy/<path>` to `<API_URL>/api/<path>` with cookies.
+
+### Calling the API from web
+
+- Do not call `apiFetch()` / `serverFetch()` with raw path strings in pages.
+- Use a typed domain function instead. Change an endpoint in one place.
+- Layout of `apps/web/src/lib/api`:
+
+| File | Holds |
+|---|---|
+| `endpoints.ts` | All API paths in one object |
+| `client.ts` | `apiFetch()` — low-level, via proxy |
+| `server.ts` | `serverFetch()` — low-level, server only |
+| `health.ts` | `getHealth()`, `getHealthOnServer()` |
+| `events.ts` | `sendPing()` |
+| `index.ts` | Re-exports everything |
+
+- Pattern: a domain file imports the path from `endpoints.ts`, picks the low-level helper, and returns a typed result.
+- To add an endpoint: add the path to `endpoints.ts`, then add a function in a domain file (or a new one).
+- Pages import from `@/lib/api`, e.g. `import { getHealth, sendPing } from '@/lib/api'`.
 
 ### api (NestJS)
 
@@ -221,6 +240,7 @@ URLs:
 1. Create a module under `apps/api/src/modules`.
 2. Register it in `app.module.ts`.
 3. Use a zod schema in `@repo/types` for the request DTO.
+4. To call it from web: add the path to `lib/api/endpoints.ts` and a typed function in a domain file.
 
 ### Add a queue event
 
