@@ -4,40 +4,169 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  default:
+    '@eslint/js':
+      specifier: ^9.18.0
+      version: 9.39.4
+    '@golevelup/nestjs-rabbitmq':
+      specifier: ^7.1.2
+      version: 7.1.2
+    '@nestjs/cli':
+      specifier: ^11.0.0
+      version: 11.0.23
+    '@nestjs/common':
+      specifier: ^11.0.1
+      version: 11.1.27
+    '@nestjs/config':
+      specifier: ^4.0.3
+      version: 4.0.4
+    '@nestjs/core':
+      specifier: ^11.0.1
+      version: 11.1.27
+    '@nestjs/platform-express':
+      specifier: ^11.0.1
+      version: 11.1.27
+    '@nestjs/schematics':
+      specifier: ^11.0.0
+      version: 11.1.0
+    '@nestjs/swagger':
+      specifier: ^11.2.6
+      version: 11.4.4
+    '@prisma/client':
+      specifier: ^6.0.0
+      version: 6.19.3
+    '@radix-ui/react-slot':
+      specifier: ^1.2.4
+      version: 1.3.0
+    '@swc/cli':
+      specifier: ^0.8.0
+      version: 0.8.1
+    '@swc/core':
+      specifier: ^1.15.18
+      version: 1.15.41
+    '@tailwindcss/postcss':
+      specifier: ^4.0.0
+      version: 4.3.1
+    '@types/express':
+      specifier: ^5.0.0
+      version: 5.0.6
+    '@types/node':
+      specifier: ^22.10.7
+      version: 22.19.21
+    '@types/react':
+      specifier: ^19.0.0
+      version: 19.2.17
+    '@types/react-dom':
+      specifier: ^19.0.0
+      version: 19.2.3
+    class-variance-authority:
+      specifier: ^0.7.1
+      version: 0.7.1
+    clsx:
+      specifier: ^2.1.1
+      version: 2.1.1
+    cross-env:
+      specifier: ^10.1.0
+      version: 10.1.0
+    eslint:
+      specifier: ^9.18.0
+      version: 9.39.4
+    eslint-config-next:
+      specifier: 16.1.6
+      version: 16.1.6
+    lucide-react:
+      specifier: ^0.577.0
+      version: 0.577.0
+    nestjs-zod:
+      specifier: ^5.3.0
+      version: 5.4.0
+    next:
+      specifier: 16.1.6
+      version: 16.1.6
+    next-intl:
+      specifier: ^4.8.3
+      version: 4.13.0
+    next-themes:
+      specifier: ^0.4.6
+      version: 0.4.6
+    prettier:
+      specifier: ^3.4.2
+      version: 3.8.4
+    prisma:
+      specifier: ^6.0.0
+      version: 6.19.3
+    react:
+      specifier: 19.2.3
+      version: 19.2.3
+    react-dom:
+      specifier: 19.2.3
+      version: 19.2.3
+    reflect-metadata:
+      specifier: ^0.2.2
+      version: 0.2.2
+    rxjs:
+      specifier: ^7.8.1
+      version: 7.8.2
+    tailwind-merge:
+      specifier: ^3.5.0
+      version: 3.6.0
+    tailwindcss:
+      specifier: ^4.0.0
+      version: 4.3.1
+    tsx:
+      specifier: ^4.21.0
+      version: 4.22.4
+    turbo:
+      specifier: ^2.8.17
+      version: 2.9.18
+    tw-animate-css:
+      specifier: ^1.4.0
+      version: 1.4.0
+    typescript:
+      specifier: ^5.7.3
+      version: 5.9.3
+    typescript-eslint:
+      specifier: ^8.0.0
+      version: 8.61.1
+    zod:
+      specifier: ^4.3.6
+      version: 4.4.3
+
 importers:
 
   .:
     dependencies:
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.22.4
     devDependencies:
       prettier:
-        specifier: ^3.4.2
+        specifier: 'catalog:'
         version: 3.8.4
       turbo:
-        specifier: ^2.8.17
+        specifier: 'catalog:'
         version: 2.9.18
 
   apps/api:
     dependencies:
       '@golevelup/nestjs-rabbitmq':
-        specifier: ^7.1.2
+        specifier: 'catalog:'
         version: 7.1.2(@nestjs/common@11.1.27(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.27)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/common':
-        specifier: ^11.0.1
+        specifier: 'catalog:'
         version: 11.1.27(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/config':
-        specifier: ^4.0.3
+        specifier: 'catalog:'
         version: 4.0.4(@nestjs/common@11.1.27(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2)
       '@nestjs/core':
-        specifier: ^11.0.1
+        specifier: 'catalog:'
         version: 11.1.27(@nestjs/common@11.1.27(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.1.27)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/platform-express':
-        specifier: ^11.0.1
+        specifier: 'catalog:'
         version: 11.1.27(@nestjs/common@11.1.27(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.27)
       '@nestjs/swagger':
-        specifier: ^11.2.6
+        specifier: 'catalog:'
         version: 11.4.4(@nestjs/common@11.1.27(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.27)(reflect-metadata@0.2.2)
       '@repo/database':
         specifier: workspace:*
@@ -46,56 +175,56 @@ importers:
         specifier: workspace:*
         version: link:../../packages/logic/types
       nestjs-zod:
-        specifier: ^5.3.0
+        specifier: 'catalog:'
         version: 5.4.0(@nestjs/common@11.1.27(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/swagger@11.4.4(@nestjs/common@11.1.27(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.27)(reflect-metadata@0.2.2))(rxjs@7.8.2)(zod@4.4.3)
       reflect-metadata:
-        specifier: ^0.2.2
+        specifier: 'catalog:'
         version: 0.2.2
       rxjs:
-        specifier: ^7.8.1
+        specifier: 'catalog:'
         version: 7.8.2
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.22.4
       zod:
-        specifier: ^4.3.6
+        specifier: 'catalog:'
         version: 4.4.3
     devDependencies:
       '@nestjs/cli':
-        specifier: ^11.0.0
+        specifier: 'catalog:'
         version: 11.0.23(@swc/cli@0.8.1(@swc/core@1.15.41))(@swc/core@1.15.41)(@types/node@22.19.21)(prettier@3.8.4)
       '@nestjs/schematics':
-        specifier: ^11.0.0
+        specifier: 'catalog:'
         version: 11.1.0(chokidar@4.0.3)(prettier@3.8.4)(typescript@5.9.3)
       '@repo/eslint-config':
         specifier: workspace:*
         version: link:../../packages/config/eslint
       '@swc/cli':
-        specifier: ^0.8.0
+        specifier: 'catalog:'
         version: 0.8.1(@swc/core@1.15.41)(chokidar@4.0.3)
       '@swc/core':
-        specifier: ^1.15.18
+        specifier: 'catalog:'
         version: 1.15.41
       '@types/express':
-        specifier: ^5.0.0
+        specifier: 'catalog:'
         version: 5.0.6
       '@types/node':
-        specifier: ^22.10.7
+        specifier: 'catalog:'
         version: 22.19.21
       cross-env:
-        specifier: ^10.1.0
+        specifier: 'catalog:'
         version: 10.1.0
       eslint:
-        specifier: ^9.18.0
+        specifier: 'catalog:'
         version: 9.39.4(jiti@2.7.0)
       typescript:
-        specifier: ^5.7.3
+        specifier: 'catalog:'
         version: 5.9.3
 
   apps/web:
     dependencies:
       '@radix-ui/react-slot':
-        specifier: ^1.2.4
+        specifier: 'catalog:'
         version: 1.3.0(@types/react@19.2.17)(react@19.2.3)
       '@repo/types':
         specifier: workspace:*
@@ -107,77 +236,77 @@ importers:
         specifier: workspace:*
         version: link:../../packages/logic/utils
       class-variance-authority:
-        specifier: ^0.7.1
+        specifier: 'catalog:'
         version: 0.7.1
       clsx:
-        specifier: ^2.1.1
+        specifier: 'catalog:'
         version: 2.1.1
       lucide-react:
-        specifier: ^0.577.0
+        specifier: 'catalog:'
         version: 0.577.0(react@19.2.3)
       next:
-        specifier: 16.1.6
+        specifier: 'catalog:'
         version: 16.1.6(@babel/core@7.29.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       next-intl:
-        specifier: ^4.8.3
+        specifier: 'catalog:'
         version: 4.13.0(next@16.1.6(@babel/core@7.29.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)(typescript@5.9.3)
       next-themes:
-        specifier: ^0.4.6
+        specifier: 'catalog:'
         version: 0.4.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       react:
-        specifier: 19.2.3
+        specifier: 'catalog:'
         version: 19.2.3
       react-dom:
-        specifier: 19.2.3
+        specifier: 'catalog:'
         version: 19.2.3(react@19.2.3)
       tailwind-merge:
-        specifier: ^3.5.0
+        specifier: 'catalog:'
         version: 3.6.0
       tw-animate-css:
-        specifier: ^1.4.0
+        specifier: 'catalog:'
         version: 1.4.0
     devDependencies:
       '@tailwindcss/postcss':
-        specifier: ^4
+        specifier: 'catalog:'
         version: 4.3.1
       '@types/node':
-        specifier: ^20
-        version: 20.19.43
+        specifier: 'catalog:'
+        version: 22.19.21
       '@types/react':
-        specifier: ^19
+        specifier: 'catalog:'
         version: 19.2.17
       '@types/react-dom':
-        specifier: ^19
+        specifier: 'catalog:'
         version: 19.2.3(@types/react@19.2.17)
       eslint:
-        specifier: ^9
+        specifier: 'catalog:'
         version: 9.39.4(jiti@2.7.0)
       eslint-config-next:
-        specifier: 16.1.6
+        specifier: 'catalog:'
         version: 16.1.6(eslint@9.39.4(jiti@2.7.0))(typescript@5.9.3)
       tailwindcss:
-        specifier: ^4
+        specifier: 'catalog:'
         version: 4.3.1
       typescript:
-        specifier: ^5
+        specifier: 'catalog:'
         version: 5.9.3
 
   apps/worker:
     dependencies:
       '@golevelup/nestjs-rabbitmq':
-        specifier: ^7.1.2
+        specifier: 'catalog:'
         version: 7.1.2(@nestjs/common@11.1.27(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.27)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/common':
-        specifier: ^11.0.1
+        specifier: 'catalog:'
         version: 11.1.27(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/config':
-        specifier: ^4.0.3
+        specifier: 'catalog:'
         version: 4.0.4(@nestjs/common@11.1.27(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2)
       '@nestjs/core':
-        specifier: ^11.0.1
+        specifier: 'catalog:'
         version: 11.1.27(@nestjs/common@11.1.27(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.1.27)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/platform-express':
-        specifier: ^11.0.1
+        specifier: 'catalog:'
         version: 11.1.27(@nestjs/common@11.1.27(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.27)
       '@repo/database':
         specifier: workspace:*
@@ -186,53 +315,53 @@ importers:
         specifier: workspace:*
         version: link:../../packages/logic/types
       reflect-metadata:
-        specifier: ^0.2.2
+        specifier: 'catalog:'
         version: 0.2.2
       rxjs:
-        specifier: ^7.8.1
+        specifier: 'catalog:'
         version: 7.8.2
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.22.4
     devDependencies:
       '@nestjs/cli':
-        specifier: ^11.0.0
+        specifier: 'catalog:'
         version: 11.0.23(@swc/cli@0.8.1(@swc/core@1.15.41))(@swc/core@1.15.41)(@types/node@22.19.21)(prettier@3.8.4)
       '@nestjs/schematics':
-        specifier: ^11.0.0
+        specifier: 'catalog:'
         version: 11.1.0(chokidar@4.0.3)(prettier@3.8.4)(typescript@5.9.3)
       '@repo/eslint-config':
         specifier: workspace:*
         version: link:../../packages/config/eslint
       '@swc/cli':
-        specifier: ^0.8.0
+        specifier: 'catalog:'
         version: 0.8.1(@swc/core@1.15.41)(chokidar@4.0.3)
       '@swc/core':
-        specifier: ^1.15.18
+        specifier: 'catalog:'
         version: 1.15.41
       '@types/node':
-        specifier: ^22.10.7
+        specifier: 'catalog:'
         version: 22.19.21
       cross-env:
-        specifier: ^10.1.0
+        specifier: 'catalog:'
         version: 10.1.0
       eslint:
-        specifier: ^9.18.0
+        specifier: 'catalog:'
         version: 9.39.4(jiti@2.7.0)
       typescript:
-        specifier: ^5.7.3
+        specifier: 'catalog:'
         version: 5.9.3
 
   packages/config/eslint:
     dependencies:
       '@eslint/js':
-        specifier: ^9.0.0
+        specifier: 'catalog:'
         version: 9.39.4
       eslint:
-        specifier: ^9.0.0
+        specifier: 'catalog:'
         version: 9.39.4(jiti@2.7.0)
       typescript-eslint:
-        specifier: ^8.0.0
+        specifier: 'catalog:'
         version: 8.61.1(eslint@9.39.4(jiti@2.7.0))(typescript@5.9.3)
 
   packages/config/typescript: {}
@@ -240,26 +369,26 @@ importers:
   packages/logic/database:
     dependencies:
       '@prisma/client':
-        specifier: ^6.0.0
+        specifier: 'catalog:'
         version: 6.19.3(prisma@6.19.3(typescript@5.9.3))(typescript@5.9.3)
       prisma:
-        specifier: ^6.0.0
+        specifier: 'catalog:'
         version: 6.19.3(typescript@5.9.3)
     devDependencies:
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../../config/typescript
       '@types/node':
-        specifier: ^22.10.7
+        specifier: 'catalog:'
         version: 22.19.21
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.22.4
 
   packages/logic/types:
     dependencies:
       zod:
-        specifier: ^4.3.6
+        specifier: 'catalog:'
         version: 4.4.3
     devDependencies:
       '@repo/typescript-config':
@@ -278,16 +407,16 @@ importers:
         specifier: workspace:*
         version: link:../../config/typescript
       '@types/react':
-        specifier: ^19.0.0
+        specifier: 'catalog:'
         version: 19.2.17
       react:
-        specifier: ^19.0.0
+        specifier: 'catalog:'
         version: 19.2.3
 
   packages/ui/tailwind:
     devDependencies:
       tailwindcss:
-        specifier: ^4.0.0
+        specifier: 'catalog:'
         version: 4.3.1
 
 packages:
@@ -1699,9 +1828,6 @@ packages:
 
   '@types/json5@0.0.29':
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
-
-  '@types/node@20.19.43':
-    resolution: {integrity: sha512-6oYBAi5ikg4Pl+kGsoYtawUMBT2zZMCvPNF7pVLnHZfd1zf38DRiWn/gT01RYCdUqkv7Fhr+C9ot4/tb+2sVvA==}
 
   '@types/node@22.19.21':
     resolution: {integrity: sha512-VMeFBSCKQKmm2swI2kW51SFusDqekC6q9trBCvJ/JliDchFSuoYYKN7yVNjPthP1HKZcx3U1gI/wTcEBjEFKTA==}
@@ -5714,10 +5840,6 @@ snapshots:
 
   '@types/json5@0.0.29': {}
 
-  '@types/node@20.19.43':
-    dependencies:
-      undici-types: 6.21.0
-
   '@types/node@22.19.21':
     dependencies:
       undici-types: 6.21.0
@@ -6752,7 +6874,7 @@ snapshots:
       eslint: 9.39.4(jiti@2.7.0)
       eslint-import-resolver-node: 0.3.10
       eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0))
-      eslint-plugin-import: 2.32.0(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.4(jiti@2.7.0))
+      eslint-plugin-import: 2.32.0(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0))
       eslint-plugin-jsx-a11y: 6.10.2(eslint@9.39.4(jiti@2.7.0))
       eslint-plugin-react: 7.37.5(eslint@9.39.4(jiti@2.7.0))
       eslint-plugin-react-hooks: 7.1.1(eslint@9.39.4(jiti@2.7.0))
@@ -6785,7 +6907,7 @@ snapshots:
       tinyglobby: 0.2.17
       unrs-resolver: 1.12.2
     optionalDependencies:
-      eslint-plugin-import: 2.32.0(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.4(jiti@2.7.0))
+      eslint-plugin-import: 2.32.0(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0))
     transitivePeerDependencies:
       - supports-color
 
@@ -6799,7 +6921,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.32.0(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.4(jiti@2.7.0)):
+  eslint-plugin-import@2.32.0(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0)):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.9

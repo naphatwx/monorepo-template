@@ -15,10 +15,10 @@
         "node": ">=22"
     },
     "dependencies": {
-        "tsx": "^4.21.0"
+        "tsx": "catalog:"
     },
     "devDependencies": {
-        "prettier": "^3.4.2",
-        "turbo": "^2.8.17"
+        "prettier": "catalog:",
+        "turbo": "catalog:"
     }
 }

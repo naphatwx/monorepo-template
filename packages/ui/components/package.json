@@ -7,8 +7,8 @@
     },
     "devDependencies": {
         "@repo/typescript-config": "workspace:*",
-        "@types/react": "^19.0.0",
-        "react": "^19.0.0"
+        "@types/react": "catalog:",
+        "react": "catalog:"
     },
     "peerDependencies": {
         "react": "^19.0.0"
