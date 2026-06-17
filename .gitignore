@@ -21,8 +21,7 @@ next-env.d.ts
 .DS_Store
 Thumbs.db
 
-# Prisma — migrations are project-specific; generate after cloning
-packages/logic/database/prisma/migrations/
+# Prisma migrations are committed (history of schema changes).
 
 # Debug
 npm-debug.log*

@@ -166,11 +166,19 @@ Server side vs client side:
 
 ## Database (Prisma)
 
-- Schema: `packages/logic/database/prisma/schema.prisma`.
+- Multi-file schema folder: `packages/logic/database/prisma/schema/`.
+  - `schema.prisma` holds the `generator` and `datasource`.
+  - Models live in their own files, e.g. `example.prisma`.
+  - Add a model = add a new `.prisma` file in this folder. Prisma merges them.
 - Starter model is `Example`. Replace it with your own.
+- Config: `packages/logic/database/prisma.config.ts`.
+  - Sets the schema folder and the `prisma/migrations` path.
+  - Loads the repo-root `.env` (a config file turns off Prisma's auto `.env` loading).
+  - So the `db:*` scripts are plain `prisma` commands, no `dotenv-cli`.
 - Client is a singleton exported from `@repo/database`.
+- Migrations are committed to git. They are the history of schema changes and `prisma migrate deploy` replays them in every environment.
 - Migrations run from the repo root with `pnpm db:migrate`.
-- The `db:*` scripts use `dotenv-cli` to load the root `.env`, because Prisma runs inside the package and would not see it otherwise.
+- `pnpm db:reset` drops and recreates the dev database.
 
 ## Environment
 
@@ -277,3 +285,6 @@ Order of decisions and work, newest last.
 11. Set `rootDir` in the NestJS tsconfig files to silence a TypeScript hint.
 12. Initialized git and pushed to a private GitHub repo.
 13. Centralized all dependency versions with the pnpm catalog.
+14. Tested the RabbitMQ flow end to end with Docker and fixed database env loading.
+15. Wrapped web API calls in typed domain functions so endpoints live in one place.
+16. Split the Prisma schema into a multi-file folder, added `prisma.config.ts`, and committed migrations.

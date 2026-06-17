@@ -1,0 +1,10 @@
+// Datasource and generator. Models live in sibling .prisma files in this
+// folder. Prisma merges every *.prisma file here automatically.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}

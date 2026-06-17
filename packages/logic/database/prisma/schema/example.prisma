@@ -1,0 +1,9 @@
+// Example model. Replace with your own. Add more models as new .prisma
+// files in this folder.
+model Example {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+
+  @@map("examples")
+}
