@@ -15,6 +15,9 @@
         },
         "lint": {
             "dependsOn": ["^db:generate"]
+        },
+        "typecheck": {
+            "dependsOn": ["^db:generate"]
         }
     }
 }

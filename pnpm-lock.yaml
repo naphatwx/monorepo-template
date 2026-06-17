@@ -406,6 +406,9 @@ importers:
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../../config/typescript
+      '@types/node':
+        specifier: 'catalog:'
+        version: 22.19.21
 
   packages/ui/components:
     devDependencies:

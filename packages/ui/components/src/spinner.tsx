@@ -15,7 +15,9 @@ export function Spinner({ size = 16 }: { size?: number }) {
 
     return (
         <span role="status" aria-label="loading" style={style}>
-            <style>{'@keyframes repo-ui-spin{to{transform:rotate(360deg)}}'}</style>
+            <style>
+                {'@keyframes repo-ui-spin{to{transform:rotate(360deg)}}'}
+            </style>
         </span>
     )
 }

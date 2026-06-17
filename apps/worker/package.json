@@ -7,7 +7,8 @@
         "dev": "cross-env NODE_OPTIONS=\"--import tsx\" nest start --watch",
         "start": "cross-env NODE_OPTIONS=\"--import tsx\" nest start",
         "start:prod": "node --import tsx dist/main",
-        "lint": "eslint \"src/**/*.ts\" --fix"
+        "lint": "eslint \"src/**/*.ts\" --fix",
+        "typecheck": "tsc --noEmit"
     },
     "dependencies": {
         "@golevelup/nestjs-rabbitmq": "catalog:",

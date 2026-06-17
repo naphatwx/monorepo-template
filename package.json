@@ -5,8 +5,12 @@
         "dev": "turbo dev",
         "build": "turbo build",
         "lint": "turbo lint",
+        "typecheck": "turbo typecheck",
+        "format": "prettier --write .",
+        "format:check": "prettier --check .",
         "db:generate": "turbo db:generate",
         "db:migrate": "pnpm --filter @repo/database db:migrate",
+        "db:reset": "pnpm --filter @repo/database db:reset",
         "db:seed": "pnpm --filter @repo/database db:seed",
         "db:studio": "pnpm --filter @repo/database db:studio"
     },

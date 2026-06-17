@@ -69,7 +69,8 @@ graph LR
 - Single quotes.
 - Trailing comma: all.
 - Line ending: LF.
-- Run `pnpm lint` before committing.
+- Run `pnpm lint` and `pnpm typecheck` before committing.
+- Run `pnpm format` to auto-format, `pnpm format:check` to verify.
 
 ### Comments
 
@@ -102,13 +103,13 @@ graph LR
 
 Server side vs client side:
 
-| | Server side (`/server`) | Client side (`/client`) |
-|---|---|---|
-| Component | Server Component | Client Component (`'use client'`) |
-| Fetch runs | on the server during render | in the browser after load |
+|                  | Server side (`/server`)                | Client side (`/client`)             |
+| ---------------- | -------------------------------------- | ----------------------------------- |
+| Component        | Server Component                       | Client Component (`'use client'`)   |
+| Fetch runs       | on the server during render            | in the browser after load           |
 | Low-level helper | `serverFetch()` in `lib/api/server.ts` | `apiFetch()` in `lib/api/client.ts` |
-| Target | `API_INTERNAL_URL` directly | `/api/proxy` route |
-| Caching | `no-store`, `force-dynamic` | per request |
+| Target           | `API_INTERNAL_URL` directly            | `/api/proxy` route                  |
+| Caching          | `no-store`, `force-dynamic`            | per request                         |
 
 - The proxy route is `apps/web/src/app/api/proxy/[...path]/route.ts`.
 - It forwards `/api/proxy/<path>` to `<API_URL>/api/<path>` with cookies.
@@ -119,14 +120,14 @@ Server side vs client side:
 - Use a typed domain function instead. Change an endpoint in one place.
 - Layout of `apps/web/src/lib/api`:
 
-| File | Holds |
-|---|---|
-| `endpoints.ts` | All API paths in one object |
-| `client.ts` | `apiFetch()` — low-level, via proxy |
-| `server.ts` | `serverFetch()` — low-level, server only |
-| `health.ts` | `getHealth()`, `getHealthOnServer()` |
-| `events.ts` | `sendPing()` |
-| `index.ts` | Re-exports everything |
+| File           | Holds                                    |
+| -------------- | ---------------------------------------- |
+| `endpoints.ts` | All API paths in one object              |
+| `client.ts`    | `apiFetch()` — low-level, via proxy      |
+| `server.ts`    | `serverFetch()` — low-level, server only |
+| `health.ts`    | `getHealth()`, `getHealthOnServer()`     |
+| `events.ts`    | `sendPing()`                             |
+| `index.ts`     | Re-exports everything                    |
 
 - Pattern: a domain file imports the path from `endpoints.ts`, picks the low-level helper, and returns a typed result.
 - To add an endpoint: add the path to `endpoints.ts`, then add a function in a domain file (or a new one).
@@ -139,8 +140,8 @@ Server side vs client side:
 - Swagger UI at `/api/docs`.
 - Validation: `nestjs-zod` global pipe. DTOs use `createZodDto` with a zod schema from `@repo/types`.
 - Endpoints:
-  - `GET /api/health` returns `{ status: 'ok', timestamp }`.
-  - `POST /api/events/ping` publishes an event to RabbitMQ.
+    - `GET /api/health` returns `{ status: 'ok', timestamp }`.
+    - `POST /api/events/ping` publishes an event to RabbitMQ.
 - Publishing has a 5 second timeout. If the broker is down it returns `503`, it does not hang.
 
 ### worker (NestJS)
@@ -167,14 +168,14 @@ Server side vs client side:
 ## Database (Prisma)
 
 - Multi-file schema folder: `packages/logic/database/prisma/schema/`.
-  - `schema.prisma` holds the `generator` and `datasource`.
-  - Models live in their own files, e.g. `example.prisma`.
-  - Add a model = add a new `.prisma` file in this folder. Prisma merges them.
+    - `schema.prisma` holds the `generator` and `datasource`.
+    - Models live in their own files, e.g. `example.prisma`.
+    - Add a model = add a new `.prisma` file in this folder. Prisma merges them.
 - Starter model is `Example`. Replace it with your own.
 - Config: `packages/logic/database/prisma.config.ts`.
-  - Sets the schema folder and the `prisma/migrations` path.
-  - Loads the repo-root `.env` (a config file turns off Prisma's auto `.env` loading).
-  - So the `db:*` scripts are plain `prisma` commands, no `dotenv-cli`.
+    - Sets the schema folder and the `prisma/migrations` path.
+    - Loads the repo-root `.env` (a config file turns off Prisma's auto `.env` loading).
+    - So the `db:*` scripts are plain `prisma` commands, no `dotenv-cli`.
 - Client is a singleton exported from `@repo/database`.
 - Migrations are committed to git. They are the history of schema changes and `prisma migrate deploy` replays them in every environment.
 - Migrations run from the repo root with `pnpm db:migrate`.
@@ -184,27 +185,35 @@ Server side vs client side:
 
 - Copy `.env.example` to `.env` before running.
 
-| Variable | Used by | Purpose |
-|---|---|---|
-| `DATABASE_URL` | api, worker, prisma | PostgreSQL connection |
-| `RABBITMQ_URL` | api, worker | RabbitMQ connection |
-| `PORT` | api | API port (default 4000) |
-| `FRONTEND_URL` | api | CORS origin |
-| `NEXT_PUBLIC_API_URL` | web (browser) | API base for the browser |
-| `API_INTERNAL_URL` | web (server) | API base for Server Components and the proxy |
+| Variable              | Used by             | Purpose                                      |
+| --------------------- | ------------------- | -------------------------------------------- |
+| `DATABASE_URL`        | api, worker, prisma | PostgreSQL connection                        |
+| `RABBITMQ_URL`        | api, worker         | RabbitMQ connection                          |
+| `PORT`                | api                 | API port (default 4000)                      |
+| `FRONTEND_URL`        | api                 | CORS origin                                  |
+| `NEXT_PUBLIC_API_URL` | web (browser)       | API base for the browser                     |
+| `API_INTERNAL_URL`    | web (server)        | API base for Server Components and the proxy |
+
+- `api` and `worker` validate env at startup with zod schemas in `@repo/types`.
+    - Schemas: `apiEnvSchema`, `workerEnvSchema`.
+    - A missing or bad value stops the app on boot instead of failing later.
 
 ## Commands
 
 - Run from the repo root.
 
-| Command | What it does |
-|---|---|
-| `pnpm dev` | Run all apps in dev mode |
-| `pnpm build` | Build all apps and packages |
-| `pnpm lint` | Lint all packages |
-| `pnpm db:migrate` | Run a Prisma migration (dev) |
-| `pnpm db:seed` | Seed the database |
-| `pnpm db:studio` | Open Prisma Studio |
+| Command             | What it does                       |
+| ------------------- | ---------------------------------- |
+| `pnpm dev`          | Run all apps in dev mode           |
+| `pnpm build`        | Build all apps and packages        |
+| `pnpm lint`         | Lint all packages                  |
+| `pnpm typecheck`    | Type-check all packages (`tsc`)    |
+| `pnpm format`       | Format the repo with Prettier      |
+| `pnpm format:check` | Check formatting without writing   |
+| `pnpm db:migrate`   | Run a Prisma migration (dev)       |
+| `pnpm db:reset`     | Drop and recreate the dev database |
+| `pnpm db:seed`      | Seed the database                  |
+| `pnpm db:studio`    | Open Prisma Studio                 |
 
 - Target one workspace with a filter, e.g. `pnpm --filter api build`.
 
@@ -288,3 +297,4 @@ Order of decisions and work, newest last.
 14. Tested the RabbitMQ flow end to end with Docker and fixed database env loading.
 15. Wrapped web API calls in typed domain functions so endpoints live in one place.
 16. Split the Prisma schema into a multi-file folder, added `prisma.config.ts`, and committed migrations.
+17. Added a `typecheck` task, env validation in `@repo/types`, root `db:reset`, and Prettier `format` scripts.

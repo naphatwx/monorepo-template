@@ -84,14 +84,14 @@ packages/
 
 ## Scripts
 
-| Command | What it does |
-|---|---|
-| `pnpm dev` | Run all apps in dev mode |
-| `pnpm build` | Build all apps |
-| `pnpm lint` | Lint all packages |
+| Command           | What it does                 |
+| ----------------- | ---------------------------- |
+| `pnpm dev`        | Run all apps in dev mode     |
+| `pnpm build`      | Build all apps               |
+| `pnpm lint`       | Lint all packages            |
 | `pnpm db:migrate` | Run a Prisma migration (dev) |
-| `pnpm db:studio` | Open Prisma Studio |
-| `pnpm db:seed` | Seed the database |
+| `pnpm db:studio`  | Open Prisma Studio           |
+| `pnpm db:seed`    | Seed the database            |
 
 ## Adding a language
 

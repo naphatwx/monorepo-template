@@ -1,10 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq'
-import {
-    EVENTS_EXCHANGE,
-    PING_ROUTING_KEY,
-    type PingEvent,
-} from '@repo/types'
+import { EVENTS_EXCHANGE, PING_ROUTING_KEY, type PingEvent } from '@repo/types'
 
 @Injectable()
 export class EventConsumer {

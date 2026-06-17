@@ -1,10 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { AmqpConnection } from '@golevelup/nestjs-rabbitmq'
-import {
-    EVENTS_EXCHANGE,
-    PING_ROUTING_KEY,
-    type PingEvent,
-} from '@repo/types'
+import { EVENTS_EXCHANGE, PING_ROUTING_KEY, type PingEvent } from '@repo/types'
 
 // Publish blocks until a channel opens. If the broker is down this never
 // resolves, so cap it with a timeout and fail fast instead of hanging.
