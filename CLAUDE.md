@@ -151,6 +151,7 @@ Server side vs client side:
 - Starter model is `Example`. Replace it with your own.
 - Client is a singleton exported from `@repo/database`.
 - Migrations run from the repo root with `pnpm db:migrate`.
+- The `db:*` scripts use `dotenv-cli` to load the root `.env`, because Prisma runs inside the package and would not see it otherwise.
 
 ## Environment
 
