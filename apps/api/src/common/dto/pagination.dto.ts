@@ -1,10 +1,5 @@
 import { createZodDto } from "nestjs-zod"
-import { z } from "zod"
+import { paginationQuerySchema } from "@repo/types"
 
-// Shared pagination query DTO. Reuse across feature controllers.
-const paginationSchema = z.object({
-    page: z.coerce.number().int().min(1).default(1),
-    limit: z.coerce.number().int().min(1).max(100).default(20),
-})
-
-export class PaginationDto extends createZodDto(paginationSchema) {}
+// NestJS DTO wrapping the shared pagination query schema.
+export class PaginationDto extends createZodDto(paginationQuerySchema) {}
