@@ -29,19 +29,39 @@ Scoped guidance for the `api` app. Read the repo-root `CLAUDE.md` for cross-cutt
 - Dev URL: http://localhost:4000
 - Swagger: http://localhost:4000/api/docs
 
-## Layout
+## Structure
 
 ```
 src/
-  main.ts              bootstrap, global prefix "api", Swagger, CORS
-  app.module.ts        root module
-  health.controller.ts GET /api/health
-  core/
-    config/            env validation module
-    rabbitmq/          publisher service
-  modules/
-    events/            POST /api/events/ping
+├── main.ts              # App entry — bootstrap, global prefix, CORS, pipe, Swagger
+├── app.module.ts        # Root module — imports every core + feature module
+├── common/              # Shared DTOs, filters, decorators, pipes
+│   └── dto/             # e.g. PaginationDto
+├── core/                # Cross-cutting infrastructure used by all features
+│   ├── config/          # Env loading and validation
+│   └── rabbitmq/        # Messaging connection + publisher service
+├── integrations/        # (add when needed) External API clients
+│   └── <provider>/      # One folder per external API
+└── modules/             # Feature modules — one folder per domain
+    └── <feature>/
+        ├── <feature>.module.ts      # Wires the feature, registered in app.module.ts
+        ├── <feature>.controller.ts  # HTTP routes, delegates to the service
+        ├── <feature>.service.ts     # Business logic (@Injectable)
+        └── dto/                     # Request + response DTOs (createZodDto)
 ```
+
+- `core/` holds shared infrastructure. `modules/` holds business features.
+- A feature is self-contained in its folder and exposed through its module.
+- `app.module.ts` is the one place that imports every module.
+
+### File naming
+
+| Suffix          | Role                                   |
+| --------------- | -------------------------------------- |
+| `*.module.ts`   | Nest module. Declares providers + imports |
+| `*.controller.ts`| HTTP routes. Thin, delegates to a service |
+| `*.service.ts`  | Business logic. `@Injectable()`        |
+| `*.dto.ts`      | Request/response shape via `createZodDto` |
 
 ## Conventions
 
@@ -52,36 +72,26 @@ src/
 
 ## How things work here
 
-- Global route prefix is `api`. So health is at `/api/health`.
+- A global route prefix is set in `main.ts`. All routes sit under it.
 - DTOs use `createZodDto` with a zod schema from `@repo/types`.
-- Env is validated at boot with `apiEnvSchema` from `@repo/types`.
+- Env is validated at boot with a zod schema from `@repo/types`.
 - The Prisma client is the singleton from `@repo/database`.
-
-## Endpoints
-
-- `GET /api/health` returns `{ status: "ok", timestamp }`.
-- `POST /api/events/ping` publishes an event to RabbitMQ.
+- Messaging constants and event types live in `@repo/types`.
 
 ## Build and runtime
 
 - Runtime uses `tsx`. Build uses the Nest CLI with the `swc` builder.
 - `tsconfig.json` sets `rootDir` to `./src` and `outDir` to `./dist`.
 
-## RabbitMQ contract
-
-- Exchange `events` (topic), routing key `event.ping`.
-- Shared constants: `EVENTS_EXCHANGE`, `PING_ROUTING_KEY` in `@repo/types`.
-- Event shape: `PingEvent` in `@repo/types`. Keep it in sync with the worker.
-- Publishing has a 5 second timeout. Broker down returns `503`, does not hang.
-
 ## How to add an endpoint
 
-1. Create a module under `src/modules`.
-2. Register it in `app.module.ts`.
-3. Use a zod schema in `@repo/types` for the request DTO.
-4. To call it from web: add the path to web's `lib/api/endpoints.ts` and a domain function.
+1. Create a feature folder under `src/modules`.
+2. Add its module, controller, and service.
+3. Register the module in `app.module.ts`.
+4. Define the request DTO with a zod schema in `@repo/types`.
+5. To call it from web: add the path and a domain function in web's `lib/api`.
 
 ## Gotchas
 
-- Start Docker (RabbitMQ) first, or the ping endpoint returns `503` after 5s.
+- Publishing when the broker is down returns `503` after 5s. Start Docker first.
 - Omitting the `.js` extension on local imports breaks the build.
