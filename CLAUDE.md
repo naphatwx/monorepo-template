@@ -82,11 +82,11 @@ graph LR
 
 ### Three layers — context and duty
 
-| File                       | Duty                          | Who reads it             | Enters context when                       |
-| -------------------------- | ----------------------------- | ------------------------ | ----------------------------------------- |
-| `CLAUDE.md` (root)         | Repo-wide rules               | Main agent + subagents   | Auto-loaded every session                 |
-| `.claude/agents/<app>-dev.md` | Defines the app's dev subagent | Main agent (for routing) | Loaded as a definition at session start   |
-| `apps/<app>/AGENTS.md`     | App-specific details          | That app's subagent      | Read by the subagent while it works       |
+| File                          | Duty                           | Who reads it             | Enters context when                     |
+| ----------------------------- | ------------------------------ | ------------------------ | --------------------------------------- |
+| `CLAUDE.md` (root)            | Repo-wide rules                | Main agent + subagents   | Auto-loaded every session               |
+| `.claude/agents/<app>-dev.md` | Defines the app's dev subagent | Main agent (for routing) | Loaded as a definition at session start |
+| `apps/<app>/AGENTS.md`        | App-specific details           | That app's subagent      | Read by the subagent while it works     |
 
 - `CLAUDE.md`: the repo "constitution". No app-specific detail here.
 - `<app>-dev.md`: its `description` decides when to spawn; its body is the system prompt.
@@ -149,6 +149,11 @@ Main agent (CLAUDE.md already loaded)
 - Connects the api publisher and the worker consumer.
 - The single source of truth is `@repo/types`: `EVENTS_EXCHANGE`, `PING_ROUTING_KEY`, `PingEvent`.
 - Per-app details are in `apps/api/AGENTS.md` and `apps/worker/AGENTS.md`.
+- RabbitMQ is opt-in. It loads only when `RABBITMQ_ENABLE=true`.
+    - Default is `false`, so you can run only api and web with no broker.
+    - api loads the broker connection with `ConditionalModule` from `@nestjs/config`.
+    - When off, `/events/ping` returns `503` because the connection is absent.
+    - When off, the worker boots but stays idle (no consumers).
 
 ## Database (Prisma)
 
@@ -173,7 +178,8 @@ Main agent (CLAUDE.md already loaded)
 | Variable              | Used by             | Purpose                                      |
 | --------------------- | ------------------- | -------------------------------------------- |
 | `DATABASE_URL`        | api, worker, prisma | PostgreSQL connection                        |
-| `RABBITMQ_URL`        | api, worker         | RabbitMQ connection                          |
+| `RABBITMQ_ENABLE`     | api, worker         | Turn RabbitMQ on (default `false`)           |
+| `RABBITMQ_URL`        | api, worker         | RabbitMQ connection (required when enabled)  |
 | `PORT`                | api                 | API port (default 4000)                      |
 | `FRONTEND_URL`        | api                 | CORS origin                                  |
 | `NEXT_PUBLIC_API_URL` | web (browser)       | API base for the browser                     |
@@ -264,7 +270,9 @@ URLs:
 
 ## Gotchas
 
-- Publishing to RabbitMQ when the broker is down returns `503` after 5 seconds. Start Docker first.
+- RabbitMQ is off by default. Set `RABBITMQ_ENABLE=true` (and start Docker) to use the queue.
+- With RabbitMQ on but the broker down, publishing returns `503` after 5 seconds. Start Docker first.
+- With RabbitMQ off, `/events/ping` returns `503` right away because no connection is loaded.
 - The theme toggle gates render on mount to avoid hydration mismatch. The needed `eslint-disable` for `react-hooks/set-state-in-effect` is intentional.
 - NestJS local imports need the `.js` extension because of `nodenext`. Omitting it breaks the build.
 - Web imports from `@repo/*` need those packages listed in `transpilePackages`.

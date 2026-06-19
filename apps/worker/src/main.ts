@@ -6,7 +6,12 @@ async function bootstrap() {
     const logger = new Logger("Worker")
     const app = await NestFactory.createApplicationContext(AppModule)
 
-    logger.log("Worker started — consuming RabbitMQ events")
+    const enabled = process.env.RABBITMQ_ENABLE === "true"
+    logger.log(
+        enabled
+            ? "Worker started — consuming RabbitMQ events"
+            : "Worker started — RabbitMQ disabled, no consumers running",
+    )
 
     const shutdown = async () => {
         logger.log("Shutting down worker...")

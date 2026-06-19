@@ -18,12 +18,12 @@ Scoped guidance for the `web` app. Read the repo-root `CLAUDE.md` for cross-cutt
 
 - Run from the repo root. Target this app with a filter.
 
-| Command                      | What it does          |
-| ---------------------------- | --------------------- |
-| `pnpm --filter web dev`      | Run web in dev mode   |
-| `pnpm --filter web build`    | Build web             |
-| `pnpm --filter web lint`     | Lint web              |
-| `pnpm --filter web typecheck`| Type-check web        |
+| Command                       | What it does        |
+| ----------------------------- | ------------------- |
+| `pnpm --filter web dev`       | Run web in dev mode |
+| `pnpm --filter web build`     | Build web           |
+| `pnpm --filter web lint`      | Lint web            |
+| `pnpm --filter web typecheck` | Type-check web      |
 
 - Dev URL: http://localhost:3000
 
@@ -59,24 +59,24 @@ src/
 - Use a typed domain function from `@/lib/api` instead.
 - The api layer lives in `lib/api`:
 
-| File          | Holds                                        |
-| ------------- | -------------------------------------------- |
-| `endpoints.ts`| All API paths in one object                  |
-| `client.ts`   | `apiFetch()` — browser, via the proxy route  |
-| `server.ts`   | `serverFetch()` — server only                |
-| `<domain>.ts` | Typed functions for one domain               |
-| `index.ts`    | Re-exports everything                        |
+| File           | Holds                                       |
+| -------------- | ------------------------------------------- |
+| `endpoints.ts` | All API paths in one object                 |
+| `client.ts`    | `apiFetch()` — browser, via the proxy route |
+| `server.ts`    | `serverFetch()` — server only               |
+| `<domain>.ts`  | Typed functions for one domain              |
+| `index.ts`     | Re-exports everything                       |
 
 - A domain file imports its path from `endpoints.ts`, picks a helper, returns a typed result.
 - To add an endpoint: add the path to `endpoints.ts`, then add a function in a domain file.
 
 ## Server side vs client side
 
-|             | Server Component            | Client Component (`"use client"`) |
-| ----------- | --------------------------- | --------------------------------- |
-| Fetch runs  | on the server at render     | in the browser after load         |
-| Helper      | `serverFetch()`             | `apiFetch()`                      |
-| Target      | the api directly            | the local `/api/proxy` route      |
+|            | Server Component        | Client Component (`"use client"`) |
+| ---------- | ----------------------- | --------------------------------- |
+| Fetch runs | on the server at render | in the browser after load         |
+| Helper     | `serverFetch()`         | `apiFetch()`                      |
+| Target     | the api directly        | the local `/api/proxy` route      |
 
 - The proxy route forwards browser calls to the api and carries cookies.
 

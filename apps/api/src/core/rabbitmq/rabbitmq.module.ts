@@ -1,22 +1,25 @@
 import { Module } from "@nestjs/common"
 import { RabbitMQModule as GolevelupRabbitMQModule } from "@golevelup/nestjs-rabbitmq"
-import { ConfigService } from "@nestjs/config"
+import { ConditionalModule, ConfigService } from "@nestjs/config"
 import { EVENTS_EXCHANGE } from "@repo/types"
 import { RabbitmqService } from "./rabbitmq.service.js"
 
+// The broker connection only loads when RABBITMQ_ENABLE is true, so api can
+// run without RabbitMQ. RabbitmqService stays available either way; it fails
+// fast on publish when the connection is absent.
 @Module({
     imports: [
-        GolevelupRabbitMQModule.forRootAsync({
-            inject: [ConfigService],
-            useFactory: (config: ConfigService) => ({
-                uri: config.get<string>(
-                    "RABBITMQ_URL",
-                    "amqp://guest:guest@localhost:5672",
-                ),
-                exchanges: [{ name: EVENTS_EXCHANGE, type: "topic" }],
-                connectionInitOptions: { wait: false },
+        ConditionalModule.registerWhen(
+            GolevelupRabbitMQModule.forRootAsync({
+                inject: [ConfigService],
+                useFactory: (config: ConfigService) => ({
+                    uri: config.getOrThrow<string>("RABBITMQ_URL"),
+                    exchanges: [{ name: EVENTS_EXCHANGE, type: "topic" }],
+                    connectionInitOptions: { wait: false },
+                }),
             }),
-        }),
+            (env) => env.RABBITMQ_ENABLE === "true",
+        ),
     ],
     providers: [RabbitmqService],
     exports: [RabbitmqService],

@@ -8,10 +8,7 @@ import { EVENTS_EXCHANGE } from "@repo/types"
         GolevelupRabbitMQModule.forRootAsync({
             inject: [ConfigService],
             useFactory: (config: ConfigService) => ({
-                uri: config.get<string>(
-                    "RABBITMQ_URL",
-                    "amqp://guest:guest@localhost:5672",
-                ),
+                uri: config.getOrThrow<string>("RABBITMQ_URL"),
                 exchanges: [{ name: EVENTS_EXCHANGE, type: "topic" }],
                 connectionInitOptions: { wait: false },
             }),

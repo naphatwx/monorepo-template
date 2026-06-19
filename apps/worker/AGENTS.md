@@ -18,12 +18,12 @@ Scoped guidance for the `worker` app. Read the repo-root `CLAUDE.md` for cross-c
 
 - Run from the repo root. Target this app with a filter.
 
-| Command                          | What it does          |
-| -------------------------------- | --------------------- |
-| `pnpm --filter worker dev`       | Run worker in dev mode|
-| `pnpm --filter worker build`     | Build worker          |
-| `pnpm --filter worker lint`      | Lint worker           |
-| `pnpm --filter worker typecheck` | Type-check worker     |
+| Command                          | What it does           |
+| -------------------------------- | ---------------------- |
+| `pnpm --filter worker dev`       | Run worker in dev mode |
+| `pnpm --filter worker build`     | Build worker           |
+| `pnpm --filter worker lint`      | Lint worker            |
+| `pnpm --filter worker typecheck` | Type-check worker      |
 
 ## Structure
 
@@ -46,9 +46,9 @@ src/
 
 ### File naming
 
-| Suffix          | Role                                      |
-| --------------- | ----------------------------------------- |
-| `*.module.ts`   | Nest module. Declares providers + imports |
+| Suffix          | Role                                        |
+| --------------- | ------------------------------------------- |
+| `*.module.ts`   | Nest module. Declares providers + imports   |
 | `*.consumer.ts` | `@RabbitSubscribe` handler. `@Injectable()` |
 
 ## Conventions
@@ -64,6 +64,9 @@ src/
 - The Prisma client is the singleton from `@repo/database`.
 - Messaging constants and event types live in `@repo/types`.
 - A consumer's event shape must match the api publisher through `@repo/types`.
+- RabbitMQ loads only when `RABBITMQ_ENABLE=true` (default `false`).
+    - `ConditionalModule` gates `RabbitmqModule` and `ConsumersModule` in `app.module.ts`.
+    - With it off, the worker boots but runs no consumers.
 
 ## Build and runtime
 

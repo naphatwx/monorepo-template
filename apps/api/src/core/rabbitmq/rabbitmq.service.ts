@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common"
+import { Injectable, Optional } from "@nestjs/common"
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq"
 import { EVENTS_EXCHANGE, PING_ROUTING_KEY, type PingEvent } from "@repo/types"
 
@@ -8,9 +8,13 @@ const PUBLISH_TIMEOUT_MS = 5000
 
 @Injectable()
 export class RabbitmqService {
-    constructor(private readonly amqpConnection: AmqpConnection) {}
+    // Absent when RABBITMQ_ENABLE is false.
+    constructor(@Optional() private readonly amqpConnection?: AmqpConnection) {}
 
     async publishPing(message: string): Promise<PingEvent> {
+        if (!this.amqpConnection) {
+            throw new Error("RabbitMQ is disabled (RABBITMQ_ENABLE=false)")
+        }
         const event: PingEvent = {
             message,
             publishedAt: new Date().toISOString(),
@@ -33,7 +37,8 @@ export class RabbitmqService {
         })
         try {
             await Promise.race([
-                this.amqpConnection.publish(exchange, routingKey, payload),
+                // Guarded by publishPing, which runs before this.
+                this.amqpConnection!.publish(exchange, routingKey, payload),
                 timeout,
             ])
         } finally {

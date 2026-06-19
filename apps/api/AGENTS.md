@@ -19,12 +19,12 @@ Scoped guidance for the `api` app. Read the repo-root `CLAUDE.md` for cross-cutt
 
 - Run from the repo root. Target this app with a filter.
 
-| Command                       | What it does       |
-| ----------------------------- | ------------------ |
-| `pnpm --filter api dev`       | Run api in dev mode|
-| `pnpm --filter api build`     | Build api          |
-| `pnpm --filter api lint`      | Lint api           |
-| `pnpm --filter api typecheck` | Type-check api     |
+| Command                       | What it does        |
+| ----------------------------- | ------------------- |
+| `pnpm --filter api dev`       | Run api in dev mode |
+| `pnpm --filter api build`     | Build api           |
+| `pnpm --filter api lint`      | Lint api            |
+| `pnpm --filter api typecheck` | Type-check api      |
 
 - Dev URL: http://localhost:4000
 - Swagger: http://localhost:4000/api/docs
@@ -56,12 +56,12 @@ src/
 
 ### File naming
 
-| Suffix          | Role                                   |
-| --------------- | -------------------------------------- |
-| `*.module.ts`   | Nest module. Declares providers + imports |
-| `*.controller.ts`| HTTP routes. Thin, delegates to a service |
-| `*.service.ts`  | Business logic. `@Injectable()`        |
-| `*.dto.ts`      | Request/response shape via `createZodDto` |
+| Suffix            | Role                                      |
+| ----------------- | ----------------------------------------- |
+| `*.module.ts`     | Nest module. Declares providers + imports |
+| `*.controller.ts` | HTTP routes. Thin, delegates to a service |
+| `*.service.ts`    | Business logic. `@Injectable()`           |
+| `*.dto.ts`        | Request/response shape via `createZodDto` |
 
 ## Conventions
 
@@ -77,6 +77,9 @@ src/
 - Env is validated at boot with a zod schema from `@repo/types`.
 - The Prisma client is the singleton from `@repo/database`.
 - Messaging constants and event types live in `@repo/types`.
+- RabbitMQ loads only when `RABBITMQ_ENABLE=true` (default `false`).
+    - `ConditionalModule` gates the broker connection in `core/rabbitmq`.
+    - With it off, `RabbitmqService` has no connection and `/events/ping` returns `503`.
 
 ## Build and runtime
 
